@@ -1,0 +1,104 @@
+<head>
+  <link rel="stylesheet" href="publish.css">
+</head>
+<% layout("/layout/boilerplate") -%>
+<body style="background-color:rgba(95, 195, 242, 0.88);">
+  <div class="container">
+    <img  src="/image/logi33.jpg">
+    <div class="publish-form row">
+        <div class="col-10 offset-3 ">
+            <h3>Publish Your Vehicle</h3>
+    <form method="post" action="/publish" novalidate class="needs-validation">
+    <div class="mb-3 ">
+      <label for="from" class="form-label">PickUp Location</label>
+      <input required type="text" name="pub[from]" class="form-control" placeholder="Delhi" id="from">
+      <div id="from-suggestions" class="suggestions"></div>
+      <p class="invalid-feedback">Enter valid pickup location</p>
+    </div>
+      <div class="mb-3">
+      <label for="to" class="form-label">Drop Location</label>
+      <input  required type="text" name="pub[to]" class="form-control" id="to">
+      <div id="to-suggestions" class="suggestions"></div>
+      <p class="invalid-feedback">Enter valid drop location</p>
+      </div>
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="date" class="form-label">Enter pickup Date</label>
+          <input required type="date" name="pub[date]"class="form-control" placeholder="1/1/2024">
+           <p class="invalid-feedback">please enter valid date</p>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label for="time" class="form-label">Enter pickup Time</label>
+        <input required type="time" name="pub[time]"class="form-control" placeholder="12:00">
+         <p class="invalid-feedback">Enter time of pickup</p>
+    </div>
+  </div>
+    <div class="row">
+        <div class="mb-3 col-md-6 ">
+            <label for="capicity" class="form-label">Capacity in KG</label>
+            <input required type="number" name="pub[capicity]" class="form-control" placeholder="100">
+             <p class="invalid-feedback">Enter capacity of Vehicle</p>
+        </div>
+        <div class="mb-3 col-md-6 ">
+          <label for="price" class="form-label">Enter the Price you want </label>
+          <input required type="number" name="pub[price]" class="form-control" placeholder="100">
+           <p class="invalid-feedback">Enter capacity of Vehicle</p>
+      </div>
+        
+        <div class="mb-3 col-md-6 ">
+            <label for="type" class="form-label">Select Truck Type</label>
+            <select required name="pub[type]" class="form-control">
+                <option value="" disabled selected>Select Truck Type</option>
+                <option value="DCM">Chota-Hathi</option>
+                <option value="Pickup Truck">Pickup Truck</option>
+                <option value="Box Truck">Box Truck</option>
+                <option value="EICHER 19 FEET">EICHER 19 FEET</option>
+                <option value="TATA 22 FEET">TATA 22 FEET</option>
+
+                <!-- Add more options as needed -->
+            </select>
+            <p class="invalid-feedback">Choose any one truck type</p>
+        </div>
+        </div>
+    <div class="mb-3">
+        <button  class="btn btn-dark submit-btn">Publish</button><hr>
+    </div>
+    </form>
+</div>
+</div>
+</div>
+<script>
+  // Function to fetch and display suggestions
+  function fetchSuggestions(inputId, suggestionsId) {
+    const input = document.getElementById(inputId);
+    const suggestions = document.getElementById(suggestionsId);
+    const baseUrl = 'https://nominatim.openstreetmap.org/search?q=';
+    const query = input.value;
+    const format = '&format=json&addressdetails=1&limit=5';
+
+    fetch(baseUrl + query + format)
+      .then(response => response.json())
+      .then(data => {
+        // Clear previous suggestions
+        suggestions.innerHTML = '';
+
+        // Display suggestions in the UI
+        data.forEach(item => {
+          const suggestion = document.createElement('div');
+          suggestion.classList.add('suggestion');
+          suggestion.textContent = item.display_name;
+          suggestion.addEventListener('click', () => {
+            input.value = item.display_name;
+            suggestions.innerHTML = '';
+          });
+          suggestions.appendChild(suggestion);
+        });
+      })
+      .catch(error => console.error('Error fetching suggestions:', error));
+  }
+
+  // Event listeners to fetch suggestions when typing in the input fields
+  document.getElementById('from').addEventListener('input', () => fetchSuggestions('from', 'from-suggestions'));
+  document.getElementById('to').addEventListener('input', () => fetchSuggestions('to', 'to-suggestions'));
+</script>
+</body>

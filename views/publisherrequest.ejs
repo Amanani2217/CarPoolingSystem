@@ -1,0 +1,137 @@
+<!-- <% layout("/layout/boilerplate") -%>
+<body>
+    <div class="row mb-3">
+        <div class="col-8 offset-3 mt-2">
+            <h3>User's Requested</h3>
+        </div>
+        <% for(let userrequest of reqbook) {%>
+            <div class="card col-4 offset-3">
+                <img style="height: 35vh;" src="/image/truck.jpg" alt="" class="card-img-top show-img">
+                <div class="card-body">
+                    <p class="card-text">
+                        <b>Pickup_point:</b><%= userrequest.pickup_point %><br>
+                        <b>Drop_point:</b><%= userrequest.drop_point %> <br>
+                       
+                        <b>Goods_type:</b><%=userrequest.goods_type %> <br>
+                        <b>Goods_weight</b>:</b><%=userrequest.goods_weight %> <br>
+                    </p>
+                    <form id="cancelForm" method="post" action="/publishercancel/<%=userrequest._id  %>?_method=DELETE">
+                       
+                        <button type="submit" class="btn btn-danger" id="cancelButton">Cancel</button> 
+                    </form>
+                    <form id="cancelForm" method="post" action="/publisheraccept/<%=userrequest._id  %>?_method=PUT">
+                         
+                        <button type="submit" class="btn btn-primary" id="cancelButton">Accept</button> 
+                    </form>
+                </div>
+            </div>
+          
+           
+            <%}%>
+    </div>
+  </body>
+
+   -->
+
+
+   <% layout("/layout/boilerplate") -%>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap" >
+            <div class="bg-dark col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+                <div class="bg-dark p-2">
+                    <a class="d-flex text-decoration-none mt-1 align-items-center text-white">
+                        <span class="fs-4 d-none d-sm-inline">Your Profile</span >
+                    </a>
+                   
+                    <ul class="nav nav-pills flex-column mt-4">
+                         <!-- <li class="nav-item py-2 py-sm-0">
+                               <a href="#" class="nav-link text-white ">
+                                    <i class="fs-5 fa fa-gauge"></i>
+                                          <span class="fs-4 ms-3 d-none d-sm-inline">Dashboard</span>
+                                </a>
+                         </li> -->
+                
+                         
+                         <li class="nav-item py-2 py-sm-0">
+                            <a type="submit" id="confirmBtn" class="nav-link text-white ">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Confirmed</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item py-2 py-sm-0">
+                            <a href="#" class="nav-link text-white ">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Book yours </span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item py-2 py-sm-0">
+                            <a id="logoutBtn" class="nav-link text-white ">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
+                            </a>
+                     </li>
+                    </ul>
+                </div>
+                </div>
+                <!-- content -->
+                <div class="content p-3">
+                    <div class="col-8 offset-1 mt-2">
+                        <h2>Here all your pending bookings </h2>
+                           <h5>Once you will Confirmed, it will show in your confirmed rides</h5> 
+                       
+                    </div>
+                    <% for(let userrequest of reqbook) {%>
+                        <div class="card col-4 offset-3">
+                            <img style="height: 35vh;" src="/image/truck.jpg" alt="" class="card-img-top show-img">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>Pickup_point:</b><%= userrequest.pickup_point %><br>
+                                    <b>Drop_point:</b><%= userrequest.drop_point %> <br>
+                                   
+                                    <b>Goods_type:</b><%=userrequest.goods_type %> <br>
+                                    <b>Goods_weight</b>:</b><%=userrequest.goods_weight %> <br>
+                                </p>
+                                <form id="cancelForm" method="post" action="/publishercancel/<%=userrequest._id  %>?_method=DELETE">
+                                   
+                                    <button type="submit" class="btn btn-danger" id="cancelButton">Cancel</button> 
+                                </form>
+                                <form id="cancelForm" method="post" action="/publisheraccept/<%=userrequest._id  %>?_method=PUT">
+                                     
+                                    <button type="submit" class="btn btn-primary" id="cancelButton">Accept</button> 
+                                </form>
+                            </div>
+                        </div>
+                      
+                       
+                        <%}%>
+                    </div>
+            </div> 
+        </div>
+        <script>
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                fetch('/logout', {
+                  method: 'GET', // or 'GET' depending on your server implementation
+                  credentials: 'same-origin' // include cookies in the request if any
+                })
+                .then(response => {
+                  if (response.ok) {
+                    // Redirect to login page or any other page
+                    window.location.href = '/login-publisher';
+                  } else {
+                    // Handle error
+                    console.error('Logout request failed');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error during logout request:', error);
+                });
+              });
+              document.getElementById('confirmBtn').addEventListener('click', function() {
+    
+                console.log('Confirm button clicked');
+               
+                window.location.href = '/publisherconfirmed';
+              });
+        </script>
+  </body>

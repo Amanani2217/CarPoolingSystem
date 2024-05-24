@@ -1,0 +1,215 @@
+<!-- <% layout("/layout/boilerplate") -%>
+ 
+
+  <style>
+  
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .navigation {
+      margin-top: 20px;
+    }
+    .navigation button {
+      margin-right: 10px;
+    }
+  </style>
+<body>
+  <div class="container">
+    <button id="publishBtn" class="btn btn-dark">Publish</button>  
+    <h1>Welcome, <%= userdata.firstname %>!</h1>
+    <div class="profile-info">
+      <p><strong>Email:</strong> <%= userdata.email %></p>
+      <p><strong>Aadhar Number:</strong> <%= userdata.aadharno %></p>
+      <p><strong>Driver's License Number:</strong> <%= userdata.dlno %></p>
+      <p><strong>RC Number:</strong> <%= userdata.rcno %></p>
+      <p><strong>Date of Birth:</strong> <%= userdata.dob.toDateString() %></p>
+      
+    </div>
+   
+    <div class="navigation">
+      <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      <button id="requestBtn" class="btn btn-success">Requests</button>  
+      <button id="confirmBtn" class="btn btn-primary">Confirmed</button> 
+    </div>
+  </div>
+
+  <script>
+   
+    document.getElementById('publishBtn').addEventListener('click', function() {
+      window.location.href = '/publish';  
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      fetch('/logout', {
+        method: 'GET', / 
+        credentials: 'same-origin'  
+      })
+      .then(response => {
+        if (response.ok) {
+           
+          window.location.href = '/login-publisher';
+        } else {
+        
+          console.error('Logout request failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error during logout request:', error);
+      });
+    });
+
+    document.getElementById('requestBtn').addEventListener('click', function() {
+      
+      console.log('Request button clicked');
+    
+      window.location.href = '/publisherequests';
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', function() {
+       
+      console.log('Confirm button clicked');
+      
+      window.location.href = '/publisherconfirmed';
+    });
+  </script>
+</body> -->
+
+<% layout("/layout/boilerplate") -%>
+  <style>
+    .profile-icon {
+        background-color: black;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+    .card {
+        border: 2px solid black;
+        border-radius: 10%;
+    }
+    .content{
+        background: rgb(194, 191, 191);
+    }
+</style>
+<body>
+  <div class="container">
+    
+    <div class="row flex-nowrap">
+      <div class="bg-dark col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+          <div class="bg-dark p-2">
+              <div class="container mt-3">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <i class="fa-solid fa-user"></i>&nbsp; Profile
+                    </button>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" href="#"><b>Name:</b> <%= userdata.firstname %>
+                          <%= userdata.lastname %></a>
+                          <a class="dropdown-item" href="#"><b>Date of Birth:</b> <%= userdata.dob.toDateString() %></a>
+                          <a class="dropdown-item" href="#"><b>Email</b><%= userdata.email %></a>
+               
+                          <a class="dropdown-item" href="#"><b>Aadhar Number:</b><%= userdata.aadharno %></a>
+                           <a class="dropdown-item" href="#"><b>Driver's License Number:</b><%= userdata.dlno %></a>
+                      <a class="dropdown-item" href="#"><b>RC Number:</b><%= userdata.rcno %></a>
+                        </div>
+                  </div>
+                </div>
+              <ul class="nav nav-pills flex-column mt-4">
+                   <!-- <li class="nav-item py-2 py-sm-0">
+                         <a href="#" class="nav-link text-white ">
+                              <i class="fs-5 fa fa-gauge"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Dashboard</span>
+                               </a>
+                   </li> -->
+                  
+                   <li class="nav-item py-2 py-sm-0">
+                      <a id="requestBtn" class="nav-link text-white ">
+                          <i class="fa-solid fa-clipboard-check"></i>
+                              <span class="fs-4 ms-3 d-none d-sm-inline">Request</span>
+                      </a>
+                  </li>
+                  <li class="nav-item py-2 py-sm-0">
+                      <a type="submit" id="confirmBtn" class="nav-link text-white ">
+                          <i class="fa-solid fa-clipboard-check"></i>
+                              <span class="fs-4 ms-3 d-none d-sm-inline">Confirmed</span>
+                      </a>
+                  </li>
+                  <!-- <li class="nav-item py-2 py-sm-0">
+                      <a href="#" class="nav-link text-white ">
+                          <i class="fa-solid fa-clipboard-check"></i>
+                          <span class="fs-4 ms-3 d-none d-sm-inline">publish Ride</span>
+                      </a>
+                  </li> -->
+                  <li class="nav-item py-2 py-sm-0">
+                      <a id="logoutBtn" class=" btn btn-danger ">
+                          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                              <span class="fs-4 ms-3 d-none d-sm-inline  btn-danger" >Logout</span>
+                      </a>
+               </li>
+              </ul>
+          </div>
+          </div>
+          <!--content-->
+          <div class="content p-3">
+              <h3>Welcome <%= userdata.firstname %>... </h3>   
+              <button id="publishBtn" class="btn btn-dark">Publish</button> <!-- "Publish" button moved to top -->
+    
+          </div>
+  </div>
+  </div>
+
+
+
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+
+  <script>
+    document.getElementById('publishBtn').addEventListener('click', function() {
+      window.location.href = '/publish';
+    });
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+      fetch('/logout', {
+        method: 'GET', // or 'GET' depending on your server implementation
+        credentials: 'same-origin' // include cookies in the request if any
+      })
+      .then(response => {
+        if (response.ok) {
+          // Redirect to login page or any other page
+          window.location.href = '/login-publisher';
+        } else {
+          // Handle error
+          console.error('Logout request failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error during logout request:', error);
+      });
+    });
+
+    document.getElementById('requestBtn').addEventListener('click', function() {
+      
+      console.log('Request button clicked');
+      
+      window.location.href = '/publisherequests';
+    });
+
+    document.getElementById('confirmBtn').addEventListener('click', function() {
+    
+      console.log('Confirm button clicked');
+     
+      window.location.href = '/publisherconfirmed';
+    });
+  </script>
+</body>

@@ -1,0 +1,124 @@
+<!-- <% layout("/layout/boilerplate") -%>
+<body>
+    <div class="row mb-3">
+        <div class="col-8 offset-3 mt-2">
+            <h3> Requested Bookings</h3>
+        </div>
+        <% for(let userrequest of reqbook) {%>
+            <div class="card col-4 offset-3">
+                <img style="height: 35vh;" src="/image/truck.jpg" alt="" class="card-img-top show-img">
+                <div class="card-body">
+                    <p class="card-text">
+                        <b>Pickup_point:</b><%= userrequest.pickup_point %><br>
+                        <b>Drop_point:</b><%= userrequest.drop_point %> <br>
+                   
+                        <b>Goods_type:</b><%=userrequest.goods_type %> <br>
+                        <b>Goods_weight</b>:</b><%=userrequest.goods_weight %> <br>
+                    </p>
+                    <form id="cancelForm" method="post" action="/usercancel/<%=userrequest._id  %>?_method=DELETE">
+                        
+                        <button type="submit" class="btn btn-primary" id="cancelButton">Cancel</button> 
+                    </form>
+                  
+                </div>
+            </div>
+          
+            
+            <%}%>
+    </div>
+  </body>
+
+   -->
+
+   <% layout("/layout/boilerplate") -%>
+<body>
+
+    <div class="container-fluid">
+        <div class="row flex-nowrap" >
+            <div class="bg-dark col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+                <div class="bg-dark p-2">
+                    <a class="d-flex text-decoration-none mt-1 align-items-center text-white">
+                        <span class="fs-4 d-none d-sm-inline">Your Profile</span >
+                    </a>
+                   
+                    <ul class="nav nav-pills flex-column mt-4">
+                         <!-- <li class="nav-item py-2 py-sm-0">
+                               <a href="profile.ejs" class="nav-link text-white ">
+                                    <i class="fs-5 fa fa-gauge"></i>
+                                          <span class="fs-4 ms-3 d-none d-sm-inline">Dashboard</span>
+                                </a>
+                         </li> -->
+                         <li class="nav-item py-2 py-sm-0">
+                            <a type="submit" id="confirmedBtn" class="nav-link text-white ">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Confirmed</span>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item py-2 py-sm-0">
+                            <a href="#" class="nav-link text-white ">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">publish your</span>
+                            </a>
+                        </li> -->
+                        <li class="nav-item py-2 py-sm-0">
+                            <a type="submit" id="logoutBtn" class="nav-link text-white ">
+                                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                    <span class="fs-4 ms-3 d-none d-sm-inline">Logout</span>
+                            </a>
+                     </li>
+                    </ul>
+                </div>
+                </div>
+                <div class="content p-3">
+                    <div class="col-8 offset-1 mt-2">
+                        <h2>Hii.. here all your pending booking </h2>
+                           <h3>it will Confirmed by  publisher</h3>
+                           <p>Once it is Confirmed it will show in your confirmed rides</p> 
+
+                    </div>
+                    <% for(let userrequest of reqbook) {%>
+                        <div class="card col-4 offset-3">
+                            <img style="height: 35vh;" src="/image/truck.jpg" alt="" class="card-img-top show-img">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <b>Pickup_point:</b><%= userrequest.pickup_point %><br>
+                                    <b>Drop_point:</b><%= userrequest.drop_point %> <br>
+                               
+                                    <b>Goods_type:</b><%=userrequest.goods_type %> <br>
+                                    <b>Goods_weight</b>:</b><%=userrequest.goods_weight %> <br>
+                                </p>
+                                <form id="cancelForm" method="post" action="/usercancel/<%=userrequest._id  %>?_method=DELETE">
+                                    <!-- <input type="hidden" id="bookingId" name="bookingid" value="<%=userrequest._id%>"> -->
+                                    <button type="submit" class="btn btn-primary" id="cancelButton">Cancel</button> 
+                                </form>
+                              
+                            </div>
+                        </div>
+                        <%}%>
+                    </div>
+        </div>
+         </div>
+   <script>
+    document.getElementById('confirmedBtn').addEventListener('click', function() {
+        console.log('Confirmed button clicked');
+        window.location.href = '/userconfirmed';
+    });
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        fetch('/logout', {
+            method: 'GET', 
+            credentials: 'same-origin' 
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    console.error('Logout request failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout request:', error);
+            });
+    });
+
+   </script>
+  </body>

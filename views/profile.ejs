@@ -1,0 +1,196 @@
+<% layout("/layout/boilerplate") -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        .profile-icon {
+            background-color: black;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+       
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row flex-nowrap">
+        <div class="bg-dark col-auto col-md-4 col-lg-3 min-vh-100 d-flex flex-column justify-content-between">
+            <div class="bg-dark p-2">
+                <div class="container mt-3">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-primary dropdown-toggle"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fa-solid fa-user"></i>&nbsp; Profile
+                      </button>
+                      <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#"><b>Name:</b> <%= userdata.firstname %>
+                            <%= userdata.lastname %></a>
+                        <a class="dropdown-item" href="#"><b>Date of Birth:</b>
+                            <%= date %></a>
+                        <a class="dropdown-item" href="#"><b>Mobile No:</b><%= userdata.mobilenumber %></a>
+                        <a class="dropdown-item" href="#"><b>Email</b><%= userdata.email %>
+                           </a>
+                    </div>
+                    </div>
+                  </div>
+                <ul class="nav nav-pills flex-column mt-4">
+                     <!-- <li class="nav-item py-2 py-sm-0">
+                           <a href="#" class="nav-link text-white ">
+                                <i class="fs-5 fa fa-gauge"></i>
+                                      <span class="fs-4 ms-3 d-none d-sm-inline">Dashboard</span>
+                                 </a>
+                     </li> -->
+                    
+                     <li class="nav-item py-2 py-sm-0">
+                        <a type="submit" id="requestBtn" class="nav-link text-white ">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                                <span class="fs-4 ms-3 d-none d-sm-inline">Request</span>
+                        </a>
+                    </li>
+                    <li class="nav-item py-2 py-sm-0">
+                        <a type="submit" id="confirmedBtn" class="nav-link text-white ">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                                <span class="fs-4 ms-3 d-none d-sm-inline">Confirm</span>
+                        </a>
+                    </li>
+                    <li class="nav-item py-2 py-sm-0">
+                        <a id="publishBtnn" type="submit" class="nav-link text-white ">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                            <span class="fs-4 ms-3 d-none d-sm-inline">publish Ride</span>
+                        </a>
+                    </li>
+                    <li class="nav-item py-2 py-sm-0">
+                        <a type="submit" id="logoutBtn" class="nav-link text-white ">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                <span class="fs-4 ms-3 d-none d-sm-inline  btn-danger" >Logout</span>
+                        </a>
+                 </li>
+                </ul>
+            </div>
+            </div>
+            <!--content-->
+
+<div class="content p-3">
+                <!-- <button type="submit" id="logoutBtn" class="btn btn-danger">Logout</button>
+                <button type="button" id="requestBtn" class="btn btn-success">Requests</button>
+                <button type="button" id="confirmedBtn" class="btn btn-primary">Confirmed</button> -->
+                <h3>Welcome <%= userdata.firstname %>... </h3>   
+                <div class="card-body col-4 offset-4">
+                    <h3 class="card-title">Search Your Vehicle</h3>
+                    <form method="post" action="/search" novalidate class="needs-validation">
+                        <div class="mb-3">
+                            <label for="from" class="form-label">PickUp Location</label>
+                            <input required type="text" id="from" name="se[from]" class="form-control" placeholder="Delhi">
+                            <div id="from-suggestions" class="suggestions"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="to" class="form-label">Drop Location</label>
+                            <input required type="text" id="to" name="se[to]" class="form-control">
+                            <div id="to-suggestions" class="suggestions"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="date" class="form-label">Enter Date of pickup</label>
+                            <input required type="date" name="se[date]" class="form-control" placeholder="2024-01-01">
+                            <div class="invalid-feedback">Please enter a valid date</div>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-dark search-btn">Search</button>
+                            <hr>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+
+                  <!-- Bootstrap JS (optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+              
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script>
+    function fetchSuggestions(inputId, suggestionsId) {
+        const input = document.getElementById(inputId);
+        const suggestions = document.getElementById(suggestionsId);
+        const baseUrl = 'https://nominatim.openstreetmap.org/search?q=';
+        const query = input.value;
+        const format = '&format=json&addressdetails=1&limit=5';
+
+        fetch(baseUrl + query + format)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                suggestions.innerHTML = '';
+
+                data.forEach(item => {
+                    const suggestion = document.createElement('div');
+                    suggestion.classList.add('suggestion');
+                    suggestion.textContent = item.display_name;
+                    suggestion.addEventListener('click', () => {
+                        input.value = item.display_name;
+                        suggestions.innerHTML = '';
+                    });
+                    suggestions.appendChild(suggestion);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching suggestions:', error);
+                suggestions.innerHTML = 'Failed to fetch suggestions';
+            });
+    }
+
+document.getElementById('from').addEventListener('input', () => fetchSuggestions('from', 'from-suggestions'));
+    document.getElementById('to').addEventListener('input', () => fetchSuggestions('to', 'to-suggestions'));
+    document.getElementById('logoutBtn').addEventListener('click', function() {
+        fetch('/logout', {
+            method: 'GET', 
+            credentials: 'same-origin' 
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    console.error('Logout request failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout request:', error);
+            });
+    });
+
+    document.getElementById('requestBtn').addEventListener('click', function() {
+        console.log('Requests button clicked');
+        window.location.href = '/userrequests';
+    });
+
+    document.getElementById('confirmedBtn').addEventListener('click', function() {
+        console.log('Confirmed button clicked');
+        window.location.href = '/userconfirmed';
+    
+    });
+
+    document.getElementById('publishBtnn').addEventListener('click', function() {
+        console.log('Confirmed button clicked');
+        window.location.href = "/login-publisher";
+    });
+</script>
+</body>
+</html>

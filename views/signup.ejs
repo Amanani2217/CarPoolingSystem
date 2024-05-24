@@ -1,0 +1,95 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up Page</title>
+  <link rel="stylesheet" href="signup.css">
+</head> -->
+<% layout("/layout/boilerplate") -%>
+<body style="background-image: url('/image/logi8.2.jpg'); background-size: cover;">
+    <div class="row">
+        <div class="col-8 offset-2">
+            <h3>SignUp</h3>
+    <form method="post" action="/signup" novalidate class="needs-validation">
+      <div class="row">
+        <div class="mb-3 col-md-6">
+          <label for="firstname" class="form-label">Enter First Name</label>
+          <input required type="text" name="sign[firstname]" class="form-control" placeholder="Joy">
+        </div>
+          <div class="mb-3 col-md-6">
+          <label for="lastname" class="form-label">Enter Last Name</label>
+          <input   type="text" name="sign[lastname]" class="form-control">
+          </div>
+    </div>
+       
+    <div class="mb-3">
+      <label for="email" class="form-label">Enter Your Email</label>
+      <input required type="email" name="sign[email]"class="form-control"
+       placeholder="LogiTrack@gmail.com"><br>
+      <div class="invalid-feedback">please enter valid Email</div>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Enter Your Password</label>
+    <input required type="password" name="sign[passward]"class="form-control"
+     placeholder="*****"><br>
+    <div class="valid-feedback">Password Looks Good</div>
+</div>
+
+    <div class="row">
+        <div class="mb-3 col-md-4 ">
+            <label for="mobileno" class="form-label">Mobile No</label>
+            <input required type="number" name="sign[mobilenumber]" class="form-control" placeholder="Enter your price"><br>
+           <div class="invalid-feedback">please enter valid mobile NO</div>
+        </div>
+        
+            <div class="mb-3 col-md-8">
+            <label for="dob" class="form-label">Enter your DOB</label>
+            <input required type="date" name="sign[dateofbrith]"class="form-control"
+             placeholder="24/09/2001">
+            <div class="invalid-feedback"> Enter valid DOB</div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <button  class="btn btn-dark submit-btn">SignUp</button><hr>
+    </div>
+    </form>
+</div>
+</div>
+</body>
+
+
+<!-- <body>
+   <div class="container">
+    <form method="post"  class="signup-form" action="/signup" >
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <label for="firstname">First Name:</label>
+        <input type="text" id="firstname" name="sign[firstname]" required>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name:</label>
+        <input type="text" id="lastname" name="sign[lastname]" required>
+      </div>
+      <div class="form-group">
+        <label for="dateofbirth">Date of Birth:</label>
+        <input type="date" id="dateofbirth" name="sign[dateofbrith]" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="sign[passward]" required>
+      </div>
+      <div class="form-group">
+        <label for="mobilenumber">Mobile Number:</label>
+        <input type="tel" id="mobilenumber" name="sign[mobilenumber]" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="sign[email]" required>
+      </div>
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+</body>
+</html> -->

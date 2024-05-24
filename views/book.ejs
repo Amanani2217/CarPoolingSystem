@@ -1,0 +1,79 @@
+ 
+<head><link rel="stylesheet" href="book.css"></head>
+<% layout("/layout/boilerplate") -%>
+<body style="background-color: rgb(161, 153, 153);">
+    <div class="container">
+        <img src="">
+        <div class="book-form row">
+            <div class="col-4">
+                <form method="post" action="/confirm" novalidate class="needs-validation">
+                        <div class="mb-3">
+                            <label for="from" class="form-label">PickUp Location</label>
+                            <input required type="text" name="pub[pickup_point]" class="form-control" placeholder="Delhi" id="from">
+                            <div id="from-suggestions" class="suggestions"></div>
+                            <p class="invalid-feedback">Enter valid pickup location</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="to" class="form-label">Drop Location</label>
+                            <input  required type="text" name="pub[drop_point]" class="form-control" placeholder="kurukshetra" id="to">
+                            <div id="to-suggestions" class="suggestions"></div>
+                            <p class="invalid-feedback">Enter valid drop location</p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="typeofgoods" class="form-label">Enter type your goods</label>
+                            <textarea name="pub[goods_type]" cols="20" rows="2"class="form-control">which type of goods you want to send
+                                </textarea>
+                            <p class="invalid-feedback">Select any one </p>
+                        </div>
+                        <div class="mb-3">
+                            <label for="weight" class="form-label">Enter Weight Of Goods in KG</label>
+                            <input  required type="number" name="pub[goods_weight]" class="form-control" placeholder="100">
+                            <p class="invalid-feedback"></p>
+                        </div>
+                        <div class="mb-3">
+                            <button  class="btn btn-dark submit-btn">Confirm</button>
+                        </div>
+                </form>
+                
+            </div>
+        </div>
+        <br>
+           
+        </form>
+       
+    </div>
+    <script>
+        // Function to fetch and display suggestions
+        function fetchSuggestions(inputId, suggestionsId) {
+          const input = document.getElementById(inputId);
+          const suggestions = document.getElementById(suggestionsId);
+          const baseUrl = 'https://nominatim.openstreetmap.org/search?q=';
+          const query = input.value;
+          const format = '&format=json&addressdetails=1&limit=5';
+    
+          fetch(baseUrl + query + format)
+            .then(response => response.json())
+            .then(data => {
+              // Clear previous suggestions
+              suggestions.innerHTML = '';
+    
+              // Display suggestions in the UI
+              data.forEach(item => {
+                const suggestion = document.createElement('div');
+                suggestion.classList.add('suggestion');
+                suggestion.textContent = item.display_name;
+                suggestion.addEventListener('click', () => {
+                  input.value = item.display_name;
+                  suggestions.innerHTML = '';
+                });
+                suggestions.appendChild(suggestion);
+              });
+            })
+            .catch(error => console.error('Error fetching suggestions:', error));
+        }
+    
+        // Event listeners to fetch suggestions when typing in the input fields
+        document.getElementById('from').addEventListener('input', () => fetchSuggestions('from', 'from-suggestions'));
+        document.getElementById('to').addEventListener('input', () => fetchSuggestions('to', 'to-suggestions'));
+      </script>
+</body>

@@ -1,0 +1,11 @@
+.container{
+
+}
+.container img{
+    max-width:100%;
+    height:auto
+}
+.container .publish-form{
+    position: absolute;
+    top:5%;
+}
