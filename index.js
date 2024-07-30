@@ -12,17 +12,18 @@ const bodyParser = require('body-parser');
 const booking =require("./models/booking");
 const methodOverride= require("method-override");
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 // Create a transporter using SMTP transport
 
 const transporter = nodemailer.createTransport({
-  service: "outlook", // Change the service to "outlook"
-  host: 'smtp-mail.outlook.com', // Outlook SMTP host
-  port: 587, // Outlook SMTP port
-  secure: false, // Set to true if your SMTP host uses TLS
+  service: "outlook",
+  host: 'smtp-mail.outlook.com',
+  port: 587,
+  secure: false,
   auth: {
-    user: 'mukulchauhan7404@outlook.com', // Your Outlook email address
-    pass: 'Mukul@123' // Your Outlook email password or app-specific password
+    user: process.env.EMAIL, // Set environment variable for email
+    pass: process.env.PASSWORD // Set environment variable for password or app-specific password
   }
 });
  
